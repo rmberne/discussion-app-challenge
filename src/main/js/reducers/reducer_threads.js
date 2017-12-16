@@ -1,14 +1,15 @@
 import _ from "lodash";
 import {
-  FETCH_THREADS,
-  FETCH_THREAD,
+  DELETE_THREAD, FETCH_THREAD, FETCH_THREADS,
   UPDATE_THREAD
 } from "../actions";
 
 export default function (state = {}, action) {
   switch (action.type) {
-    case UPDATE_THREAD:
+    case DELETE_THREAD:
       return _.omit(state, action.payload);
+    case UPDATE_THREAD:
+      return {...state, [action.payload.data.id]: action.payload.data};
     case FETCH_THREAD:
       return {...state, [action.payload.data.id]: action.payload.data};
     case FETCH_THREADS:

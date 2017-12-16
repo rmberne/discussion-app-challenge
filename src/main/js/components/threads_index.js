@@ -14,7 +14,7 @@ class ThreadsIndex extends Component {
       return (
           <li className="list-group-item" key={thread.id}>
             <Link to={`/threads/${thread.id}`}>
-              {thread.title}
+              {thread.title} - {thread.entries.length} comments
             </Link>
           </li>
       );

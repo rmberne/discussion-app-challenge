@@ -41328,8 +41328,10 @@
 	  var action = arguments[1];
 	
 	  switch (action.type) {
-	    case _actions.UPDATE_THREAD:
+	    case _actions.DELETE_THREAD:
 	      return _lodash2.default.omit(state, action.payload);
+	    case _actions.UPDATE_THREAD:
+	      return _extends({}, state, _defineProperty({}, action.payload.data.id, action.payload.data));
 	    case _actions.FETCH_THREAD:
 	      return _extends({}, state, _defineProperty({}, action.payload.data.id, action.payload.data));
 	    case _actions.FETCH_THREADS:
@@ -58505,8 +58507,8 @@
 	  };
 	}
 	
-	function updateThread(id, callback) {
-	  var request = _axios2.default.put(ROOT_URL + "/threads/" + id).then(function () {
+	function updateThread(values, callback) {
+	  var request = _axios2.default.put(ROOT_URL + "/threads", values).then(function () {
 	    return callback();
 	  });
 	
@@ -60211,7 +60213,10 @@
 	          _react2.default.createElement(
 	            _reactRouterDom.Link,
 	            { to: "/threads/" + thread.id },
-	            thread.title
+	            thread.title,
+	            " - ",
+	            thread.entries.length,
+	            " comments"
 	          )
 	        );
 	      });
@@ -60406,6 +60411,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(/*! react */ 1);
@@ -60474,6 +60481,16 @@
 	      }
 	    }
 	  }, {
+	    key: "onCommentSubmit",
+	    value: function onCommentSubmit(values) {
+	      var thread = _extends({}, this.props.thread);
+	      thread.entries.push({ content: values.comment });
+	
+	      this.props.updateThread(thread, function () {
+	        // this.props.history.push("/");
+	      });
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      var thread = this.props.thread;
@@ -60518,7 +60535,7 @@
 	          null,
 	          this.renderEntries(thread.entries)
 	        ),
-	        _react2.default.createElement(_comments2.default, { thread: thread })
+	        _react2.default.createElement(_comments2.default, { onSubmit: this.onCommentSubmit.bind(this) })
 	      );
 	    }
 	  }]);
@@ -60532,7 +60549,7 @@
 	  return { thread: threads[ownProps.match.params.id] };
 	}
 	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchThread: _actions.fetchThread, deleteThread: _actions.deleteThread })(ThreadsShow);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchThread: _actions.fetchThread, deleteThread: _actions.deleteThread, updateThread: _actions.updateThread })(ThreadsShow);
 
 /***/ }),
 /* 529 */
@@ -60599,15 +60616,6 @@
 	      );
 	    }
 	  }, {
-	    key: "onSubmit",
-	    value: function onSubmit(values) {
-	      console.log(this.props);
-	      console.log(values);
-	      // this.props.updateThread(values, () => {
-	      //   this.props.history.push("/");
-	      // });
-	    }
-	  }, {
 	    key: "render",
 	    value: function render() {
 	      var handleSubmit = this.props.handleSubmit;
@@ -60616,7 +60624,7 @@
 	      return _react2.default.createElement(
 	        "form",
 	        { className: "comments-new",
-	          onSubmit: handleSubmit(this.onSubmit.bind(this)) },
+	          onSubmit: handleSubmit(this.props.onSubmit) },
 	        _react2.default.createElement(_reduxForm.Field, {
 	          name: "comment",
 	          type: "textarea",

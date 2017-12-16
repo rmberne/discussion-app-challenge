@@ -1,6 +1,8 @@
 package ai.leverton.challengediscussionapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -9,6 +11,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Table(name = "discussions")
+@JsonIgnoreProperties("new")
 public class Discussion extends AbstractPersistable<Long> {
 
   @Column(name = "title", nullable = false)
@@ -17,7 +20,7 @@ public class Discussion extends AbstractPersistable<Long> {
   @Column(name = "content", length = 4000, nullable = false)
   private String content;
 
-  @OneToMany(mappedBy = "discussion")
+  @OneToMany(mappedBy = "discussion", cascade = CascadeType.ALL)
   private List<DiscussionEntry> entries;
 
   public String getTitle() {

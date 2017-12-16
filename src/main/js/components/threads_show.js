@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {fetchThread, deleteThread} from "../actions";
+import {fetchThread, deleteThread, updateThread} from "../actions";
 import Comments from "./comments";
 
 class ThreadsShow extends Component {
@@ -32,6 +32,15 @@ class ThreadsShow extends Component {
     }
   }
 
+  onCommentSubmit(values) {
+    const thread = {...this.props.thread};
+    thread.entries.push({content: values.comment});
+
+    this.props.updateThread(thread, () => {
+      // this.props.history.push("/");
+    });
+  }
+
   render() {
     const {thread} = this.props;
 
@@ -54,7 +63,7 @@ class ThreadsShow extends Component {
             {this.renderEntries(thread.entries)}
           </ul>
 
-          <Comments thread={thread}></Comments>
+          <Comments onSubmit={this.onCommentSubmit.bind(this)}></Comments>
         </div>
     );
   }
@@ -64,5 +73,6 @@ function mapStateToProps({threads}, ownProps) {
   return {thread: threads[ownProps.match.params.id]};
 }
 
-export default connect(mapStateToProps, {fetchThread, deleteThread})(
+export default connect(mapStateToProps,
+    {fetchThread, deleteThread, updateThread})(
     ThreadsShow);

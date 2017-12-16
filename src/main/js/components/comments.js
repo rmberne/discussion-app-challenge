@@ -18,20 +18,14 @@ class Comments extends Component {
     );
   }
 
-  onSubmit(values) {
-    console.log(this.props);
-    console.log(values);
-    // this.props.updateThread(values, () => {
-    //   this.props.history.push("/");
-    // });
-  }
+
 
   render() {
     const {handleSubmit} = this.props;
 
     return (
         <form className="comments-new"
-              onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+              onSubmit={handleSubmit(this.props.onSubmit)}>
           <Field
               name="comment"
               type="textarea"

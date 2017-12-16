@@ -1,7 +1,7 @@
 package ai.leverton.challengediscussionapp.api;
 
 import ai.leverton.challengediscussionapp.model.Discussion;
-import ai.leverton.challengediscussionapp.repository.DiscussionRepository;
+import ai.leverton.challengediscussionapp.service.DiscussionService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,36 +18,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("threads")
 public class DiscussionController {
 
-  private final DiscussionRepository discussionRepository;
+  private final DiscussionService discussionService;
 
   @Autowired
-  public DiscussionController(DiscussionRepository discussionRepository) {
-    this.discussionRepository = discussionRepository;
+  public DiscussionController(DiscussionService discussionService) {
+    this.discussionService = discussionService;
   }
 
   @GetMapping
   public ResponseEntity<List<Discussion>> get() {
-    return ResponseEntity.ok(discussionRepository.findAll());
+    return ResponseEntity.ok(discussionService.findAll());
   }
 
   @GetMapping("{id}")
   public ResponseEntity<Discussion> get(@PathVariable Long id) {
-    return ResponseEntity.ok(discussionRepository.findOne(id));
+    return ResponseEntity.ok(discussionService.find(id));
   }
 
   @PostMapping
   public ResponseEntity<Discussion> post(@RequestBody Discussion discussion) {
-    return ResponseEntity.ok(discussionRepository.save(discussion));
+    return ResponseEntity.ok(discussionService.save(discussion));
   }
 
   @PutMapping
   public ResponseEntity<Discussion> put(@RequestBody Discussion discussion) {
-    return ResponseEntity.ok(discussionRepository.save(discussion));
+    discussion.getEntries().forEach(entry -> entry.setDiscussion(discussion));
+
+    return ResponseEntity.ok(discussionService.save(discussion));
   }
 
   @DeleteMapping
   public ResponseEntity<Long> delete(@PathVariable Long id) {
-    discussionRepository.delete(id);
+    discussionService.delete(id);
     return ResponseEntity.ok(id);
   }
 

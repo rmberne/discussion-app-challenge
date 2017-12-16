@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Table(name = "discussion_entries")
-@JsonIgnoreProperties({"discussion"})
+@JsonIgnoreProperties({"discussion", "new"})
 public class DiscussionEntry extends AbstractPersistable<Long> {
 
   private String content;
