@@ -37,10 +37,9 @@ export function fetchThread(id) {
   };
 }
 
-export function updateThread(values, callback) {
+export function updateThread(values) {
   const request = axios
-  .put(`${ROOT_URL}/threads`, values)
-  .then(() => callback());
+  .put(`${ROOT_URL}/threads`, values);
 
   return {
     type: UPDATE_THREAD,
