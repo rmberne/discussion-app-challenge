@@ -1,0 +1,23 @@
+body {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+form a {
+  margin-left: 5px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #999;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.comments-new textarea {
+  width: 100%;
+}
