@@ -58507,10 +58507,8 @@
 	  };
 	}
 	
-	function updateThread(values, callback) {
-	  var request = _axios2.default.put(ROOT_URL + "/threads", values).then(function () {
-	    return callback();
-	  });
+	function updateThread(values) {
+	  var request = _axios2.default.put(ROOT_URL + "/threads", values);
 	
 	  return {
 	    type: UPDATE_THREAD,
