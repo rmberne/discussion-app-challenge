@@ -36,9 +36,7 @@ class ThreadsShow extends Component {
     const thread = {...this.props.thread};
     thread.entries.push({content: values.comment});
 
-    this.props.updateThread(thread, () => {
-      // this.props.history.push("/");
-    });
+    this.props.updateThread(thread);
   }
 
   render() {

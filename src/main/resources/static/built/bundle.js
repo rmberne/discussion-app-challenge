@@ -60486,9 +60486,7 @@
 	      var thread = _extends({}, this.props.thread);
 	      thread.entries.push({ content: values.comment });
 	
-	      this.props.updateThread(thread, function () {
-	        // this.props.history.push("/");
-	      });
+	      this.props.updateThread(thread);
 	    }
 	  }, {
 	    key: "render",
